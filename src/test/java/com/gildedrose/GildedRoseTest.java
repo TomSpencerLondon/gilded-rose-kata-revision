@@ -110,5 +110,40 @@ class GildedRoseTest {
         assertEquals(0, app.items[0].quality);
     }
 
+    @Test
+    void normal_item_reduces_quality_before_sellin() {
+        Item[] items = new Item[] {
+            new Item("Elixir of the Mongoose", 5, 7),
+            new Item("+5 Dexterity Vest", 10, 20)
+        };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Elixir of the Mongoose", app.items[0].name);
+        assertEquals(4, app.items[0].sellIn);
+        assertEquals(6, app.items[0].quality);
+
+        assertEquals("+5 Dexterity Vest", app.items[1].name);
+        assertEquals(9, app.items[1].sellIn);
+        assertEquals(19, app.items[1].quality);
+    }
+
+    @Test
+    void normal_item_doubles_quality_reduction_after_sellin() {
+        Item[] items = new Item[] {
+            new Item("Elixir of the Mongoose", -1, 7),
+            new Item("+5 Dexterity Vest", -1, 20)
+        };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Elixir of the Mongoose", app.items[0].name);
+        assertEquals(-2, app.items[0].sellIn);
+        assertEquals(5, app.items[0].quality);
+
+        assertEquals("+5 Dexterity Vest", app.items[1].name);
+        assertEquals(-2, app.items[1].sellIn);
+        assertEquals(18, app.items[1].quality);
+    }
 }
 
