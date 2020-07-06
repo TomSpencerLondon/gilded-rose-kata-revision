@@ -35,7 +35,7 @@ class GildedRoseTest {
     }
 
     @Test
-    void aged_brie_increases_in_quality_and_decreases_sellin() {
+    void aged_brie_increases_in_quality_and_decreases_in_sellin() {
         Item[] items = new Item[] {
             new Item("Aged Brie", 4, 1)
         };
@@ -69,5 +69,46 @@ class GildedRoseTest {
         assertEquals(-2, app.items[0].sellIn);
         assertEquals(50, app.items[0].quality);
     }
+
+    @Test
+    void backstage_passes_increases_by_one_if_more_than_6_days_before() {
+        Item[] items = new Item[] {
+            new Item("Backstage passes to a TAFKAL80ETC concert", 10, 10)
+        };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Backstage passes to a TAFKAL80ETC concert", app.items[0].name);
+        assertEquals(9, app.items[0].sellIn);
+        assertEquals(11, app.items[0].quality);
+    }
+
+    @Test
+    void backstage_passes_increases_by_two_if_less_than_6_days_before() {
+        Item[] items = new Item[] {
+            new Item("Backstage passes to a TAFKAL80ETC concert", 5, 10)
+        };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Backstage passes to a TAFKAL80ETC concert", app.items[0].name);
+        assertEquals(4, app.items[0].sellIn);
+        assertEquals(12, app.items[0].quality);
+    }
+
+
+    @Test
+    void backstage_passes_is_worth_nothing_after_concert() {
+        Item[] items = new Item[] {
+            new Item("Backstage passes to a TAFKAL80ETC concert", 0, 10)
+        };
+
+        GildedRose app = new GildedRose(items);
+        app.updateQuality();
+        assertEquals("Backstage passes to a TAFKAL80ETC concert", app.items[0].name);
+        assertEquals(-1, app.items[0].sellIn);
+        assertEquals(0, app.items[0].quality);
+    }
+
 }
 
